@@ -1,0 +1,22 @@
+{
+  "name": "organization-server",
+  "description": "Organization Server for Sabius developments",
+  "main": "index.js",
+  "authors": [{
+    "name": "ISA group",
+    "web": "http://www.isa.us.es/"
+  }],
+  "license": "GPL-3.0+",
+  "keywords": [
+    "swagger"
+  ],
+  "homepage": "https://github.com/Albrodpul/organization-server",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components/",
+    "test",
+    "tests"
+  ]
+}

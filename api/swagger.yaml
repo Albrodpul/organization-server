@@ -1,0 +1,104 @@
+---
+swagger: "2.0"
+info:
+  description: "A sample API that uses a petstore as an example to demonstrate features\
+    \ in the swagger-2.0 specification"
+  version: "1.0.0"
+  title: "Swagger organization.data.sabius-alpha"
+  termsOfService: "http://helloreverb.com/terms/"
+  contact:
+    name: "Swagger API team"
+    url: "http://swagger.io"
+    email: "foo@example.com"
+  license:
+    name: "MIT"
+    url: "http://opensource.org/licenses/MIT"
+host: "localhost:8080"
+basePath: "/api/v1"
+schemes:
+- "http"
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /{snapshot}/departments:
+    get:
+      tags:
+      - "organization"
+      description: "Returns all departments"
+      operationId: "getDepartments"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Name of an existing department"
+        required: false
+        type: "string"
+      - name: "snapshot"
+        in: "path"
+        description: "The identifier of the snapshot"
+        required: true
+        type: "string"      
+      responses:
+        200:
+          description: "Department response"
+          schema:
+            type: "array"
+            title: "Organizations"
+            items:
+              $ref: "#/definitions/Organization"
+        500:
+          description: "Internal Server Error"
+      x-swagger-router-controller: "Organization"
+  /{snapshot}/groups:
+    get:
+      tags:
+      - "organization"
+      description: "Returns all groups"
+      operationId: "getGroups"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Name of an existing groups"
+        required: false
+        type: "string"
+      - name: "snapshot"
+        in: "path"
+        description: "The identifier of the snapshot"
+        required: true
+        type: "string"      
+      responses:
+        200:
+          description: "Group response"
+          schema:
+            type: "array"
+            title: "Organizations"
+            items:
+              $ref: "#/definitions/Organization"
+        500:
+          description: "Internal Server Error"
+      x-swagger-router-controller: "Organization"      
+definitions:
+  Organization:
+    type: "object"
+    properties:
+      groupName:
+        type: "string"
+      departmentName:
+        type: "string"
+      snapshot: 
+        type: "string"
+      researchers:
+        type: "array"
+        items:
+          $ref: "#/definitions/Researchers"
+  Researchers:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      orcid:
+        type: "string"
+      authorId:
+        type: "string"

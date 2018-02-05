@@ -1,8 +1,10 @@
 "use strict";
 
 module.exports = {
+  get: get,
   getDepartments: getDepartments,
-  getGroups: getGroups
+  getGroups: getGroups,
+  insertSnapshotFiles: insertSnapshotFiles
 };
 
 const assert = require("assert");
@@ -18,6 +20,20 @@ mongoose.Promise = global.Promise;
 
 var promise = mongoose.connect(uri);
 
+function get(snapshot, callback) {
+  modelsMongo.find({
+    "snapshot": snapshot
+  }, function (err, data) {
+    if (err) {
+      callback(err, null); //internal server error
+    } else if (data.length != 0) {
+      callback(null, data); //get organizations
+    } else {
+      callback(null, null); //not found
+    }
+  });
+}
+
 function getDepartments(snapshot, departmentName, callback) {
   if (departmentName) {
     logger.info("departmentName: " + departmentName + ", snapshot: " + snapshot);
@@ -30,7 +46,6 @@ function getDepartments(snapshot, departmentName, callback) {
       } else if (data.length != 0) {
         callback(null, data); //get department
       } else {
-        console.log("Entro aquí");
         callback(null, null); //not found
       }
     });
@@ -60,7 +75,6 @@ function getGroups(snapshot, groupName, callback) {
       } else if (data.length != 0) {
         callback(null, data); //get group
       } else {
-        console.log("Entro aquí");
         callback(null, null); //not found
       }
     });
@@ -78,5 +92,14 @@ function getGroups(snapshot, groupName, callback) {
   }
 }
 
-
-
+function insertSnapshotFiles(organization, callback) {
+  modelsMongo.collection.insert(organization, {
+    ordered: true
+  }, function (err) {
+    if (err) {
+      callback(err, null); //internal server error
+    } else {
+      callback(null, null); //created
+    }
+  });
+}

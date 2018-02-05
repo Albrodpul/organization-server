@@ -23,6 +23,29 @@ consumes:
 produces:
 - "application/json"
 paths:
+  /{snapshot}:
+    get:
+      tags:
+      - "organization"
+      description: "Returns all organizations"
+      operationId: "get"
+      parameters: 
+      - name: "snapshot"
+        in: "path"
+        description: "The identifier of the snapshot"
+        required: true
+        type: "string"      
+      responses:
+        200:
+          description: "Organization response"
+          schema:
+            type: "array"
+            title: "Organizations"
+            items:
+              $ref: "#/definitions/Organization"
+        500:
+          description: "Internal Server Error"
+      x-swagger-router-controller: "Organization"
   /{snapshot}/departments:
     get:
       tags:
@@ -51,6 +74,34 @@ paths:
         500:
           description: "Internal Server Error"
       x-swagger-router-controller: "Organization"
+  /{snapshot}/departments/{name}:
+    get:
+      tags:
+      - "organization"
+      description: "Returns all departments"
+      operationId: "getDepartmentsByName"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of an existing department"
+        required: true
+        type: "string"
+      - name: "snapshot"
+        in: "path"
+        description: "The identifier of the snapshot"
+        required: true
+        type: "string"      
+      responses:
+        200:
+          description: "Department response"
+          schema:
+            type: "array"
+            title: "Organizations"
+            items:
+              $ref: "#/definitions/Organization"
+        500:
+          description: "Internal Server Error"
+      x-swagger-router-controller: "Organization"      
   /{snapshot}/groups:
     get:
       tags:

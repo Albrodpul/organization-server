@@ -10,7 +10,7 @@ const logger = require("../config/logConfig");
 var path = require('path');
 var fs = require("fs");
 
-exports.get = function (args, res, next) {
+exports.getSnapshot = function (args, res, next) {
   /**
    * Returns all organizations
    *
@@ -18,7 +18,7 @@ exports.get = function (args, res, next) {
    **/
   var snapshot = args.snapshot.value;
   logger.info("Get " + snapshot);
-  mongo.get(snapshot, function (err, data) {
+  mongo.getSnapshot(snapshot, function (err, data) {
     if (err) {
       logger.info(err);
       res.sendStatus(500); // internal server error
@@ -26,18 +26,21 @@ exports.get = function (args, res, next) {
       logger.info("Get!");
       res.send(data);
     } else {
-      var groups = fs.readFileSync(path.join(__dirname, '../data/groups.' + snapshot + '.json'), {
-        encoding: 'utf-8'
-      });
-      var departments = fs.readFileSync(path.join(__dirname, '../data/departments.' + snapshot + '.json'), {
-        encoding: 'utf-8'
-      });
-      var researchers = fs.readFileSync(path.join(__dirname, '../data/researchers.' + snapshot + '.json'), {
-        encoding: 'utf-8'
-      });
-      if (!groups || !departments || !researchers) {
+      if (!fs.existsSync(path.join(__dirname, '../data/groups.' + snapshot + '.json')) ||
+        !fs.existsSync(path.join(__dirname, '../data/departments.' + snapshot + '.json')) ||
+        !fs.existsSync(path.join(__dirname, '../data/researchers.' + snapshot + '.json'))) {
+          logger.info("Not found");
         res.sendStatus(404); //snapshot files not found
       } else {
+        var groups = fs.readFileSync(path.join(__dirname, '../data/groups.' + snapshot + '.json'), {
+          encoding: 'utf-8'
+        });
+        var departments = fs.readFileSync(path.join(__dirname, '../data/departments.' + snapshot + '.json'), {
+          encoding: 'utf-8'
+        });
+        var researchers = fs.readFileSync(path.join(__dirname, '../data/researchers.' + snapshot + '.json'), {
+          encoding: 'utf-8'
+        });
         var groupsAux = JSON.parse(groups);
         var departmentsAux = JSON.parse(departments);
         var researchersAux = JSON.parse(researchers);
@@ -81,6 +84,7 @@ exports.get = function (args, res, next) {
             res.end();
           }
         });
+        logger.info("Get!");
         res.send(data);
       }
     }

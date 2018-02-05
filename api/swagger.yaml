@@ -27,8 +27,8 @@ paths:
     get:
       tags:
       - "organization"
-      description: "Returns all organizations"
-      operationId: "get"
+      description: "Returns an existing snapshot"
+      operationId: "getSnapshot"
       parameters: 
       - name: "snapshot"
         in: "path"
@@ -43,6 +43,8 @@ paths:
             title: "Organizations"
             items:
               $ref: "#/definitions/Organization"
+        404:
+          description: "Not found"              
         500:
           description: "Internal Server Error"
       x-swagger-router-controller: "Organization"
@@ -50,13 +52,13 @@ paths:
     get:
       tags:
       - "organization"
-      description: "Returns all departments"
+      description: "Returns an existing department"
       operationId: "getDepartments"
       parameters:
       - name: "name"
         in: "query"
         description: "Name of an existing department"
-        required: false
+        required: true
         type: "string"
       - name: "snapshot"
         in: "path"
@@ -71,6 +73,8 @@ paths:
             title: "Organizations"
             items:
               $ref: "#/definitions/Organization"
+        404:
+          description: "Not found"              
         500:
           description: "Internal Server Error"
       x-swagger-router-controller: "Organization"
@@ -78,7 +82,7 @@ paths:
     get:
       tags:
       - "organization"
-      description: "Returns all departments"
+      description: "Returns an existing department"
       operationId: "getDepartmentsByName"
       parameters:
       - name: "name"
@@ -99,6 +103,8 @@ paths:
             title: "Organizations"
             items:
               $ref: "#/definitions/Organization"
+        404:
+          description: "Not found"              
         500:
           description: "Internal Server Error"
       x-swagger-router-controller: "Organization"      
@@ -106,12 +112,12 @@ paths:
     get:
       tags:
       - "organization"
-      description: "Returns all groups"
+      description: "Returns an existing group"
       operationId: "getGroups"
       parameters:
       - name: "name"
         in: "query"
-        description: "Name of an existing groups"
+        description: "Name of an existing group"
         required: false
         type: "string"
       - name: "snapshot"
@@ -127,6 +133,8 @@ paths:
             title: "Organizations"
             items:
               $ref: "#/definitions/Organization"
+        404:
+          description: "Not found"
         500:
           description: "Internal Server Error"
       x-swagger-router-controller: "Organization"      

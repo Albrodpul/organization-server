@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  get: get,
+  getSnapshot: getSnapshot,
   getDepartments: getDepartments,
   getGroups: getGroups,
   insertSnapshotFiles: insertSnapshotFiles
@@ -20,7 +20,7 @@ mongoose.Promise = global.Promise;
 
 var promise = mongoose.connect(uri);
 
-function get(snapshot, callback) {
+function getSnapshot(snapshot, callback) {
   modelsMongo.find({
     "snapshot": snapshot
   }, function (err, data) {

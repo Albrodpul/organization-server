@@ -20,7 +20,7 @@ exports.getDepartmentByName = function (args, res, next) {
   var snapshot = args.snapshot.value;
   if (!snapshot) {
     logger.info("Bad request");
-    res.sendStatus(404);
+    res.sendStatus(400);
   } else if (idDepartment && snapshot) {
     logger.info("Get Departments");
     mongo.getDepartmentByName(snapshot, idDepartment, function (err, data) {
@@ -61,7 +61,7 @@ exports.getGroupByName = function (args, res, next) {
   var snapshot = args.snapshot.value;
   if (!snapshot) {
     logger.info("Bad request");
-    res.sendStatus(404);
+    res.sendStatus(400);
   } else if (idGroup && snapshot) {
     logger.info("Get Groups");
     mongo.getGroupByName(snapshot, idGroup, function (err, data) {

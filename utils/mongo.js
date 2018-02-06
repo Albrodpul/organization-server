@@ -10,6 +10,7 @@ module.exports = {
 const assert = require("assert");
 var mongoose = require("mongoose");
 
+var OrganizationSchema = require("../utils/models");
 var config = require("../config/config");
 
 var logger = require("../config/logConfig");
@@ -18,27 +19,6 @@ var uri = "mongodb://" + config.urlMongo + ":" + config.portMongo + "/sabius";
 mongoose.Promise = global.Promise;
 
 var promise = mongoose.connect(uri);
-
-// mongoose.Promise = global.Promise;
-var Schema = mongoose.Schema;
-
-// create a schema
-
-var OrganizationSchema = new Schema({
-  idResearcher: String,
-  name: String,
-  phone: String,
-  professionalSituation: String,
-  orcid: String,
-  researcherId: String,
-  link: String,
-  idGroup: String,
-  keywords: String,
-  viewURL: String,
-  idDepartment: String,
-  departmentViewUrl: String,
-  departmentName: String
-});
 
 function getDepartments(snapshot, callback) {
   logger.info("snapshot: " + snapshot);

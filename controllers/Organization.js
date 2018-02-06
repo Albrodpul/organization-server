@@ -4,10 +4,6 @@ var url = require('url');
 
 var Organization = require('./OrganizationService');
 
-module.exports.getSnapshot = function getSnapshot (req, res, next) {
-  Organization.getSnapshot(req.swagger.params, res, next);
-};
-
 module.exports.getDepartmentByName = function getDepartmentByName (req, res, next) {
   Organization.getDepartmentByName(req.swagger.params, res, next);
 };

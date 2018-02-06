@@ -1,16 +1,15 @@
 "use strict";
 
 module.exports = {
-  getSnapshot: getSnapshot,
+  getDepartments: getDepartments,
   getDepartmentByName: getDepartmentByName,
-  getGroupByName: getGroupByName,
-  insertSnapshotFiles: insertSnapshotFiles
+  getGroups: getGroups,
+  getGroupByName: getGroupByName
 };
 
 const assert = require("assert");
 var mongoose = require("mongoose");
 
-var modelsMongo = require("../utils/models");
 var config = require("../config/config");
 
 var logger = require("../config/logConfig");
@@ -20,25 +19,47 @@ mongoose.Promise = global.Promise;
 
 var promise = mongoose.connect(uri);
 
-function getSnapshot(snapshot, callback) {
-  modelsMongo.find({
-    "snapshot": snapshot
-  }, function (err, data) {
+// mongoose.Promise = global.Promise;
+var Schema = mongoose.Schema;
+
+// create a schema
+
+var OrganizationSchema = new Schema({
+  idResearcher: String,
+  name: String,
+  phone: String,
+  professionalSituation: String,
+  orcid: String,
+  researcherId: String,
+  link: String,
+  idGroup: String,
+  keywords: String,
+  viewURL: String,
+  idDepartment: String,
+  departmentViewUrl: String,
+  departmentName: String
+});
+
+function getDepartments(snapshot, callback) {
+  logger.info("snapshot: " + snapshot);
+  var modelsMongo = mongoose.model("researchers-" + snapshot, OrganizationSchema);
+  modelsMongo.distinct("idDepartment", function (err, data) {
     if (err) {
       callback(err, null); //internal server error
     } else if (data.length != 0) {
-      callback(null, data); //get organizations
+      callback(null, data); //get department
     } else {
       callback(null, null); //not found
     }
   });
 }
 
-function getDepartmentByName(snapshot, departmentName, callback) {
-  logger.info("departmentName: " + departmentName + ", snapshot: " + snapshot);
+
+function getDepartmentByName(snapshot, idDepartment, callback) {
+  logger.info("idDepartment: " + idDepartment + ", snapshot: " + snapshot);
+  var modelsMongo = mongoose.model("researchers-" + snapshot, OrganizationSchema);
   modelsMongo.find({
-    "departmentName": departmentName,
-    "snapshot": snapshot
+    "idDepartment": idDepartment
   }, function (err, data) {
     if (err) {
       callback(err, null); //internal server error
@@ -50,11 +71,25 @@ function getDepartmentByName(snapshot, departmentName, callback) {
   });
 }
 
-function getGroupByName(snapshot, groupName, callback) {
-  logger.info("groupName: " + groupName + ", snapshot: " + snapshot);
+function getGroups(snapshot, callback) {
+  logger.info("snapshot: " + snapshot);
+  var modelsMongo = mongoose.model("researchers-" + snapshot, OrganizationSchema);
+  modelsMongo.distinct("idGroup", function (err, data) {
+    if (err) {
+      callback(err, null); //internal server error
+    } else if (data.length != 0) {
+      callback(null, data); //get department
+    } else {
+      callback(null, null); //not found
+    }
+  });
+}
+
+function getGroupByName(snapshot, idGroup, callback) {
+  logger.info("idGroup: " + idGroup + ", snapshot: " + snapshot);
+  var modelsMongo = mongoose.model("researchers-" + snapshot, OrganizationSchema);
   modelsMongo.find({
-    "groupName": groupName,
-    "snapshot": snapshot
+    "idGroup": idGroup,
   }, function (err, data) {
     if (err) {
       callback(err, null); //internal server error
@@ -62,18 +97,6 @@ function getGroupByName(snapshot, groupName, callback) {
       callback(null, data); //get group
     } else {
       callback(null, null); //not found
-    }
-  });
-}
-
-function insertSnapshotFiles(organization, callback) {
-  modelsMongo.collection.insert(organization, {
-    ordered: true
-  }, function (err) {
-    if (err) {
-      callback(err, null); //internal server error
-    } else {
-      callback(null, null); //created
     }
   });
 }

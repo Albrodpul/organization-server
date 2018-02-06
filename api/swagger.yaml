@@ -23,31 +23,6 @@ consumes:
 produces:
 - "application/json"
 paths:
-  /{snapshot}:
-    get:
-      tags:
-      - "organization"
-      description: "Returns an existing snapshot"
-      operationId: "getSnapshot"
-      parameters: 
-      - name: "snapshot"
-        in: "path"
-        description: "The identifier of the snapshot"
-        required: true
-        type: "string"      
-      responses:
-        200:
-          description: "Organization response"
-          schema:
-            type: "array"
-            title: "Organizations"
-            items:
-              $ref: "#/definitions/Organization"
-        404:
-          description: "Not found"              
-        500:
-          description: "Internal Server Error"
-      x-swagger-router-controller: "Organization"
   /{snapshot}/departments:
     get:
       tags:
@@ -72,7 +47,7 @@ paths:
             type: "array"
             title: "Organizations"
             items:
-              $ref: "#/definitions/Organization"
+              $ref: "#/definitions/Department"
         400:
           description: "Bad request"
         404:
@@ -104,7 +79,7 @@ paths:
             type: "array"
             title: "Organizations"
             items:
-              $ref: "#/definitions/Organization"
+              $ref: "#/definitions/Department"
         400:
           description: "Bad request"              
         404:
@@ -136,7 +111,7 @@ paths:
             type: "array"
             title: "Organizations"
             items:
-              $ref: "#/definitions/Organization"
+              $ref: "#/definitions/Group"
         400:
           description: "Bad request"              
         404:
@@ -145,25 +120,14 @@ paths:
           description: "Internal Server Error"
       x-swagger-router-controller: "Organization"      
 definitions:
-  Organization:
+  Department:
     type: "object"
     properties:
-      groupName:
+      departmentName: 
         type: "string"
-      departmentName:
-        type: "string"
-      snapshot: 
-        type: "string"
-      researchers:
-        type: "array"
-        items:
-          $ref: "#/definitions/Researchers"
-  Researchers:
+  Group:
     type: "object"
     properties:
-      name:
+      groupName: 
         type: "string"
-      orcid:
-        type: "string"
-      authorId:
-        type: "string"
+

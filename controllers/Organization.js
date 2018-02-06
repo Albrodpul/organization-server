@@ -8,14 +8,10 @@ module.exports.getSnapshot = function getSnapshot (req, res, next) {
   Organization.getSnapshot(req.swagger.params, res, next);
 };
 
-module.exports.getDepartments = function getDepartments (req, res, next) {
-  Organization.getDepartments(req.swagger.params, res, next);
+module.exports.getDepartmentByName = function getDepartmentByName (req, res, next) {
+  Organization.getDepartmentByName(req.swagger.params, res, next);
 };
 
-module.exports.getDepartmentsByName = function getDepartmentsByName (req, res, next) {
-  Organization.getDepartmentsByName(req.swagger.params, res, next);
-};
-
-module.exports.getGroups = function getGroups (req, res, next) {
-  Organization.getGroups(req.swagger.params, res, next);
+module.exports.getGroupByName = function getGroupByName (req, res, next) {
+  Organization.getGroupByName(req.swagger.params, res, next);
 };

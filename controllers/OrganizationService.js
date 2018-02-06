@@ -29,7 +29,7 @@ exports.getSnapshot = function (args, res, next) {
       if (!fs.existsSync(path.join(__dirname, '../data/groups.' + snapshot + '.json')) ||
         !fs.existsSync(path.join(__dirname, '../data/departments.' + snapshot + '.json')) ||
         !fs.existsSync(path.join(__dirname, '../data/researchers.' + snapshot + '.json'))) {
-          logger.info("Not found");
+        logger.info("Not found");
         res.sendStatus(404); //snapshot files not found
       } else {
         var groups = fs.readFileSync(path.join(__dirname, '../data/groups.' + snapshot + '.json'), {
@@ -92,7 +92,7 @@ exports.getSnapshot = function (args, res, next) {
 
 }
 
-exports.getDepartments = function (args, res, next) {
+exports.getDepartmentByName = function (args, res, next) {
   /**
    * Returns all departments
    *
@@ -100,45 +100,27 @@ exports.getDepartments = function (args, res, next) {
    **/
   var departmentName = args.name.value;
   var snapshot = args.snapshot.value;
-  logger.info("Get Departments");
-  mongo.getDepartments(snapshot, departmentName, function (err, data) {
-    if (err) {
-      logger.info(err);
-      res.sendStatus(500); // internal server error
-    } else if (data) {
-      logger.info("Get!");
-      res.send(data);
-    } else {
-      logger.info("Not found!");
-      res.sendStatus(404);
-    }
-  });
+  if (!departmentName || !snapshot) {
+    logger.info("Bad request");
+    res.sendStatus(404);
+  } else {
+    logger.info("Get Departments");
+    mongo.getDepartmentByName(snapshot, departmentName, function (err, data) {
+      if (err) {
+        logger.info(err);
+        res.sendStatus(500); // internal server error
+      } else if (data) {
+        logger.info("Get!");
+        res.send(data);
+      } else {
+        logger.info("Not found!");
+        res.sendStatus(404);
+      }
+    });
+  }
 }
 
-exports.getDepartmentsByName = function (args, res, next) {
-  /**
-   * Returns all departments
-   *
-   * returns List
-   **/
-  var departmentName = args.name.value;
-  var snapshot = args.snapshot.value;
-  logger.info("Get Departments");
-  mongo.getDepartments(snapshot, departmentName, function (err, data) {
-    if (err) {
-      logger.info(err);
-      res.sendStatus(500); // internal server error
-    } else if (data) {
-      logger.info("Get!");
-      res.send(data);
-    } else {
-      logger.info("Not found!");
-      res.sendStatus(404);
-    }
-  });
-}
-
-exports.getGroups = function (args, res, next) {
+exports.getGroupByName = function (args, res, next) {
   /**
    * Returns all groups
    *
@@ -146,17 +128,22 @@ exports.getGroups = function (args, res, next) {
    **/
   var groupName = args.name.value;
   var snapshot = args.snapshot.value;
-  logger.info("Get Groups");
-  mongo.getGroups(snapshot, groupName, function (err, data) {
-    if (err) {
-      logger.info(err);
-      res.sendStatus(500); // internal server error
-    } else if (data) {
-      logger.info("Get!");
-      res.send(data);
-    } else {
-      logger.info("Not found!");
-      res.sendStatus(404);
-    }
-  });
+  if (!groupName || !snapshot) {
+    logger.info("Bad request");
+    res.sendStatus(404);
+  } else {
+    logger.info("Get Groups");
+    mongo.getGroupByName(snapshot, groupName, function (err, data) {
+      if (err) {
+        logger.info(err);
+        res.sendStatus(500); // internal server error
+      } else if (data) {
+        logger.info("Get!");
+        res.send(data);
+      } else {
+        logger.info("Not found!");
+        res.sendStatus(404);
+      }
+    });
+  }
 }

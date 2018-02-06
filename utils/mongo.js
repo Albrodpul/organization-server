@@ -2,8 +2,8 @@
 
 module.exports = {
   getSnapshot: getSnapshot,
-  getDepartments: getDepartments,
-  getGroups: getGroups,
+  getDepartmentByName: getDepartmentByName,
+  getGroupByName: getGroupByName,
   insertSnapshotFiles: insertSnapshotFiles
 };
 
@@ -34,62 +34,36 @@ function getSnapshot(snapshot, callback) {
   });
 }
 
-function getDepartments(snapshot, departmentName, callback) {
-  if (departmentName) {
-    logger.info("departmentName: " + departmentName + ", snapshot: " + snapshot);
-    modelsMongo.find({
-      "departmentName": departmentName,
-      "snapshot": snapshot
-    }, function (err, data) {
-      if (err) {
-        callback(err, null); //internal server error
-      } else if (data.length != 0) {
-        callback(null, data); //get department
-      } else {
-        callback(null, null); //not found
-      }
-    });
-  } else {
-    logger.info("snapshot: " + snapshot);
-    modelsMongo.find({
-      "snapshot": snapshot
-    }, function (err, data) {
-      if (err) {
-        callback(err, null); //internal server error
-      } else {
-        callback(null, data); //get all departments
-      }
-    });
-  }
+function getDepartmentByName(snapshot, departmentName, callback) {
+  logger.info("departmentName: " + departmentName + ", snapshot: " + snapshot);
+  modelsMongo.find({
+    "departmentName": departmentName,
+    "snapshot": snapshot
+  }, function (err, data) {
+    if (err) {
+      callback(err, null); //internal server error
+    } else if (data.length != 0) {
+      callback(null, data); //get department
+    } else {
+      callback(null, null); //not found
+    }
+  });
 }
 
-function getGroups(snapshot, groupName, callback) {
-  if (groupName) {
-    logger.info("groupName: " + groupName + ", snapshot: " + snapshot);
-    modelsMongo.find({
-      "groupName": groupName,
-      "snapshot": snapshot
-    }, function (err, data) {
-      if (err) {
-        callback(err, null); //internal server error
-      } else if (data.length != 0) {
-        callback(null, data); //get group
-      } else {
-        callback(null, null); //not found
-      }
-    });
-  } else {
-    logger.info("snapshot: " + snapshot);
-    modelsMongo.find({
-      "snapshot": snapshot
-    }, function (err, data) {
-      if (err) {
-        callback(err, null); //internal server error
-      } else {
-        callback(null, data); //get all groups
-      }
-    });
-  }
+function getGroupByName(snapshot, groupName, callback) {
+  logger.info("groupName: " + groupName + ", snapshot: " + snapshot);
+  modelsMongo.find({
+    "groupName": groupName,
+    "snapshot": snapshot
+  }, function (err, data) {
+    if (err) {
+      callback(err, null); //internal server error
+    } else if (data.length != 0) {
+      callback(null, data); //get group
+    } else {
+      callback(null, null); //not found
+    }
+  });
 }
 
 function insertSnapshotFiles(organization, callback) {

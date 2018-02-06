@@ -58,7 +58,7 @@ paths:
       - name: "name"
         in: "query"
         description: "Name of an existing department"
-        required: true
+        required: false
         type: "string"
       - name: "snapshot"
         in: "path"

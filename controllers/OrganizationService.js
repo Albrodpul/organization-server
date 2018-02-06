@@ -100,12 +100,25 @@ exports.getDepartmentByName = function (args, res, next) {
    **/
   var departmentName = args.name.value;
   var snapshot = args.snapshot.value;
-  if (!departmentName || !snapshot) {
+  if (!snapshot) {
     logger.info("Bad request");
     res.sendStatus(404);
-  } else {
+  } else if (departmentName && snapshot) {
     logger.info("Get Departments");
     mongo.getDepartmentByName(snapshot, departmentName, function (err, data) {
+      if (err) {
+        logger.info(err);
+        res.sendStatus(500); // internal server error
+      } else if (data) {
+        logger.info("Get!");
+        res.send(data);
+      } else {
+        logger.info("Not found!");
+        res.sendStatus(404);
+      }
+    });
+  } else if (snapshot) {
+    mongo.getSnapshot(snapshot, function (err, data) {
       if (err) {
         logger.info(err);
         res.sendStatus(500); // internal server error
@@ -128,12 +141,25 @@ exports.getGroupByName = function (args, res, next) {
    **/
   var groupName = args.name.value;
   var snapshot = args.snapshot.value;
-  if (!groupName || !snapshot) {
+  if (!snapshot) {
     logger.info("Bad request");
     res.sendStatus(404);
-  } else {
+  } else if (groupName && snapshot) {
     logger.info("Get Groups");
     mongo.getGroupByName(snapshot, groupName, function (err, data) {
+      if (err) {
+        logger.info(err);
+        res.sendStatus(500); // internal server error
+      } else if (data) {
+        logger.info("Get!");
+        res.send(data);
+      } else {
+        logger.info("Not found!");
+        res.sendStatus(404);
+      }
+    });
+  } else if (snapshot) {
+    mongo.getSnapshot(snapshot, function (err, data) {
       if (err) {
         logger.info(err);
         res.sendStatus(500); // internal server error

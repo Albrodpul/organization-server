@@ -13,10 +13,9 @@ info:
   license:
     name: "MIT"
     url: "http://opensource.org/licenses/MIT"
-host: "localhost:8080"
+host: "organization.data.sabius-alpha.services.governify.io"
 basePath: "/api/v1"
 schemes:
-- "http"
 - "https"
 consumes:
 - "application/json"
